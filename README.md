@@ -9,7 +9,7 @@
 </p>
 
 ## Aim
-The target of TevTube is to provide a premium, lighting-fast, and fully responsive YouTube experience that mirrors the 2024 YouTube UI. It aims to showcase how modern web technologies like React, Tailwind CSS, and Clerk can be harmonized to build a high-fidelity platform capable of handling real-time data from the YouTube API.
+The target of TevTube is to provide a premium, lighting-fast, and fully responsive YouTube experience that mirrors the 2026 YouTube UI. It aims to showcase how modern web technologies like React, Tailwind CSS, and Clerk can be harmonized to build a high-fidelity platform capable of handling real-time data from the YouTube API.
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/aqua.png" width="100%" />
