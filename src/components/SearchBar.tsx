@@ -8,6 +8,7 @@ import { Mic } from "lucide-react";
 
 export const SearchBar = () => {
     const [query, setQuery] = useState("");
+    const [isFocused, setIsFocused] = useState(false);
     const navigate = useNavigate();
 
     const handleSearch = (e: React.FormEvent) => {
@@ -18,28 +19,36 @@ export const SearchBar = () => {
     };
 
     return (
-        <div className="flex flex-1 items-center gap-4">
-            <form onSubmit={handleSearch} className="flex flex-1 items-center">
-                <div className="flex flex-1 items-center rounded-full border border-border bg-background shadow-inner">
-                    <div className="flex flex-1 items-center px-4 py-1.5 overflow-hidden">
+        <div className="flex flex-1 items-center gap-4 max-w-[720px] mx-auto">
+            <form onSubmit={handleSearch} className="flex flex-1 items-center group">
+                <div className={`flex flex-1 items-center rounded-l-full border transition-all duration-200 bg-background/95 ${isFocused
+                        ? "border-blue-500 ring-1 ring-blue-500/20 shadow-[inset_0_1px_2px_rgba(0,0,0,0.1)]"
+                        : "border-border shadow-inner"
+                    }`}>
+                    <div className="flex items-center flex-1 px-4 py-1.5 overflow-hidden ml-1">
+                        {isFocused && (
+                            <Search className="h-4 w-4 mr-3 text-muted-foreground shrink-0 animate-in fade-in duration-200" />
+                        )}
                         <Input
                             type="text"
                             placeholder="Search"
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
-                            className="w-full border-none bg-transparent p-0 text-base focus-visible:ring-0 placeholder:text-muted-foreground/60"
+                            onFocus={() => setIsFocused(true)}
+                            onBlur={() => setIsFocused(false)}
+                            className="w-full border-none bg-transparent p-0 text-[16px] focus-visible:ring-0 placeholder:text-muted-foreground/70"
                         />
                     </div>
-                    <Button
-                        type="submit"
-                        variant="secondary"
-                        className="h-[40px] px-5 rounded-r-full border-l border-border bg-secondary hover:bg-muted"
-                    >
-                        <Search className="h-5 w-5" />
-                    </Button>
                 </div>
+                <Button
+                    type="submit"
+                    variant="secondary"
+                    className="h-[40px] px-5 rounded-r-full border border-l-0 border-border bg-secondary/80 hover:bg-muted/90 flex-shrink-0"
+                >
+                    <Search className="h-5 w-5" />
+                </Button>
             </form>
-            <Button variant="secondary" size="icon" className="rounded-full bg-secondary hover:bg-muted">
+            <Button variant="secondary" size="icon" className="rounded-full bg-secondary/80 hover:bg-muted/90 flex-shrink-0">
                 <Mic className="h-5 w-5" />
             </Button>
         </div>

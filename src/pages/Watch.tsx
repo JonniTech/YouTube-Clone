@@ -9,9 +9,11 @@ import { ErrorAlert } from "@/components/ErrorAlert";
 import { Separator } from "@/components/ui/separator";
 import { youtubeService } from "@/services/youtube";
 import type { YouTubeVideo } from "@/types/youtube";
+import { useSidebar } from "@/hooks/use-sidebar";
 
 export default function Watch() {
     const { videoId } = useParams();
+    const { setOpen } = useSidebar();
     const [video, setVideo] = useState<YouTubeVideo | null>(null);
     const [relatedVideos, setRelatedVideos] = useState<YouTubeVideo[]>([]);
     const [comments, setComments] = useState<any[]>([]);
@@ -80,7 +82,15 @@ export default function Watch() {
         };
 
         fetchVideoData();
-        window.scrollTo(0, 0); // Scroll to top when video changes
+
+        // Scroll main-content container to top
+        const mainContent = document.getElementById('main-content');
+        if (mainContent) {
+            mainContent.scrollTo(0, 0);
+        }
+
+        // Collapse sidebar on watch page entry
+        setOpen(false);
     }, [videoId]);
 
     if (loading) return <VideoDetailsSkeleton />;
@@ -88,12 +98,18 @@ export default function Watch() {
     if (!video) return <ErrorAlert message="Video not found." />;
 
     return (
-        <div className="max-w-[1700px] mx-auto px-4 md:px-6 py-4 xl:px-12 flex flex-col gap-8">
-            <div className="flex flex-col lg:flex-row gap-6 items-start">
-                <div className="flex-1 flex flex-col gap-8 min-w-0">
+        <div className="max-w-[1700px] mx-auto px-4 md:px-6 py-4 xl:px-12 flex flex-col gap-8 overflow-x-hidden">
+            <div className="flex flex-col lg:flex-row gap-6 items-start w-full max-w-full">
+                <div className="flex-1 flex flex-col gap-8 min-w-0 w-full max-w-full">
                     <div className="flex flex-col gap-4">
                         <VideoPlayer videoId={videoId as string} />
                         <VideoDetails video={video} />
+                    </div>
+
+                    {/* Mobile Related Videos */}
+                    <div className="lg:hidden flex flex-col gap-4">
+                        <h2 className="font-semibold text-[15px] tracking-tight text-muted-foreground uppercase px-1">Up next</h2>
+                        <RelatedVideos videos={relatedVideos.slice(0, 12)} />
                     </div>
 
                     {comments.length > 0 && (
@@ -106,7 +122,9 @@ export default function Watch() {
                         </div>
                     )}
                 </div>
-                <div className="lg:w-[350px] xl:w-[400px] shrink-0 flex flex-col gap-4 sticky top-4">
+
+                {/* Desktop Sidebar */}
+                <div className="hidden lg:flex lg:w-[350px] xl:w-[400px] shrink-0 flex-col gap-4 sticky top-4">
                     <h2 className="font-semibold text-base tracking-tight text-muted-foreground uppercase">Up next</h2>
                     <RelatedVideos videos={relatedVideos.slice(0, 12)} />
                 </div>

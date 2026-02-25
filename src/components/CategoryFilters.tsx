@@ -29,7 +29,7 @@ interface CategoryFiltersProps {
 
 export const CategoryFilters = ({ selectedCategory, onCategoryChange }: CategoryFiltersProps) => {
     return (
-        <div className="sticky top-0 z-40 bg-background py-3">
+        <div className="sticky top-0 z-40 bg-background py-3 max-w-full overflow-hidden px-1">
             <ScrollArea className="w-full whitespace-nowrap">
                 <div className="flex w-max space-x-3 px-6">
                     {categories.map((category) => (
